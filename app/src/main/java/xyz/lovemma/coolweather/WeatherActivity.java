@@ -1,5 +1,6 @@
 package xyz.lovemma.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -27,6 +28,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import xyz.lovemma.coolweather.gson.Forecast;
 import xyz.lovemma.coolweather.gson.Weather;
+import xyz.lovemma.coolweather.service.AutoUpdateService;
 import xyz.lovemma.coolweather.util.HttpUtil;
 import xyz.lovemma.coolweather.util.Utility;
 
@@ -213,6 +215,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
 }
