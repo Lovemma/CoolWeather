@@ -1,6 +1,7 @@
 package xyz.lovemma.coolweather;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -63,24 +64,30 @@ public class ChooseAreaFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 if (currentLevel == LEVEL_PROVINCE) {
                     selectedProvince = mProvinceList.get(i);
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = mCityList.get(i);
                     queryCounties();
+                }else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = mCountyList.get(i).getWeatherId();
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id", weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
-                backButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (currentLevel == LEVEL_COUNTY) {
-                            queryCities();
-                        } else if (currentLevel == LEVEL_CITY) {
-                            queryProvinces();
-                        }
-                    }
-                });
+            }
+        });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentLevel == LEVEL_COUNTY) {
+                    queryCities();
+                } else if (currentLevel == LEVEL_CITY) {
+                    queryProvinces();
+                }
             }
         });
         queryProvinces();
